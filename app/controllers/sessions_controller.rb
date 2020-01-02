@@ -5,8 +5,12 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
-      # ユーザーログイン後にユーザー情報のページにリダイレクトする
+      # ユーザーログイン
       log_in user
+      # 記憶トークンを生成してダイジェストをデータベースに保存
+      # +トークンをCookieに保存
+      remember user
+      # ユーザー情報のページにリダイレクトする
       redirect_to user
     else
       flash.now[:danger] = 'Invalid email/password combination'
