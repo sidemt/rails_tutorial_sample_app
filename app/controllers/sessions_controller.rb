@@ -7,9 +7,10 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       # ユーザーログイン
       log_in user
-      # 記憶トークンを生成してダイジェストをデータベースに保存
+      # Remember me チェックボックスの値に応じて処理
+      # チェックしていたら、記憶トークンを生成してダイジェストをデータベースに保存
       # +トークンをCookieに保存
-      remember user
+      params[:session][:remember_me] == '1' ? remember(user) : forget(user)
       # ユーザー情報のページにリダイレクトする
       redirect_to user
     else
