@@ -6,8 +6,7 @@ class AccountActivationsController < ApplicationController
     # params[:id]で渡されたトークンから生成したハッシュ値がダイジェストと一致したら
     if user && !user.activated? && user.authenticated?(:activation, params[:id])
       # 有効化状態にする
-      user.update_attribute(:activated, true)
-      user.update_attribute(:activated_at, Time.zone.now)
+      user.activate
       # ログインさせる
       log_in user
       flash[:success] = "Account activated!"
