@@ -11,8 +11,8 @@ class SessionsController < ApplicationController
       # チェックしていたら、記憶トークンを生成してダイジェストをデータベースに保存
       # +トークンをCookieに保存
       params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-      # ユーザー情報のページにリダイレクトする
-      redirect_to user
+      # ユーザー情報のページか、元のページにリダイレクトする
+      redirect_back_or user
     else
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
